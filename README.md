@@ -8,3 +8,5 @@ I know I used some not-so-great practices, but point here is to test, break and 
 --- 
 
 I'm using c++17 and Clion to build and run this
+
+For testing I'm using postman as a client

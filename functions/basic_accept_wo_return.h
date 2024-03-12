@@ -52,6 +52,11 @@ void basic_accept_wo_return(){
 
     wprintf(L"client connected... \n");
 
+    //displaying received data  from client
+    char buff[1024] = {0};
+    recv(acceptSocket, buff, sizeof(buff), 0);
+    std::cout<<"received data: "<<buff<<std::endl;
+
 
     //closing sockets
     closesocket(listenSocket);
