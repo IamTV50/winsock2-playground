@@ -2,6 +2,7 @@
 #include "functions/basic_accept_wo_return.h"
 #include "functions/basic_accept_w_return.h"
 #include "functions/small_receive_buffer_test.h"
+#include "functions/send_html.h"
 
 int main() {
     WSADATA wsaData = {0};
@@ -56,7 +57,8 @@ int main() {
 
     //basic_accept_wo_return(clientSocket);
     //basic_accept_w_return(clientSocket);
-    small_receive_buffer_test(clientSocket);
+    //small_receive_buffer_test(clientSocket);
+    send_html(clientSocket);
 
 
     //closing sockets
