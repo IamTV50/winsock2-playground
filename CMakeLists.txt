@@ -7,6 +7,7 @@ add_executable(playing_with_winsock2 main.cpp
         functions/basic_accept_wo_return.h
         functions/basic_accept_w_return.h
         functions/small_receive_buffer_test.h
-        functions/send_html.h)
+        functions/send_html.h
+        functions/header_parser.h)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} ws2_32)

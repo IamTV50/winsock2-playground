@@ -8,6 +8,7 @@
 #include <ws2tcpip.h>
 #include <fstream>
 #include <string>
+#include "header_parser.h"
 
 std::string readHtml(const std::string file){
     std::ifstream htmlFile;
@@ -47,15 +48,26 @@ std::string readHtml(const std::string file){
 void send_html(SOCKET clientSocket){
     int iResult = 0;
     char recvBuff[1024] = {0};
-    recv(clientSocket, recvBuff, sizeof(recvBuff), 0);
+    bool keepAlive = false;
 
-    //std::string httpResponse = readHtml("../html/hello.html");
-    std::string httpResponse = readHtml("../html/big.html");
+    do{
+        recv(clientSocket, recvBuff, sizeof(recvBuff), 0);
+        std::string str(recvBuff);
+        std::string onlyHeaders = isolateHeaders(&str);
 
-    //std::cout<<httpResponse<<std::endl;
+        if(connectionKeepAlive(&onlyHeaders, "Connection")){
+            keepAlive = true;
+        }
 
-    iResult = send(clientSocket, httpResponse.c_str(), httpResponse.length(), 0);
-    if(iResult == SOCKET_ERROR){
-        wprintf(L"send failed with error: %d\n", WSAGetLastError());
-    }
+        //std::string httpResponse = readHtml("../html/hello.html");
+        std::string httpResponse = readHtml("../html/big.html");
+
+        //std::cout<<httpResponse<<std::endl;
+
+        iResult = send(clientSocket, httpResponse.c_str(), httpResponse.length(), 0);
+        if(iResult == SOCKET_ERROR){
+            wprintf(L"send failed with error: %d\n", WSAGetLastError());
+            keepAlive = false;
+        }
+    }while(keepAlive);
 }
